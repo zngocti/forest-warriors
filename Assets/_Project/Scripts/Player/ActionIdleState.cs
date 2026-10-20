@@ -1,9 +1,9 @@
-using Mono.Cecil;
 using UnityEngine;
 
 public class ActionIdleState : IState
 {
     readonly Player _context;
+
     public ActionIdleState(Player context)
     {
         _context = context;
@@ -14,17 +14,17 @@ public class ActionIdleState : IState
 
     public void Tick(float dt)
     {
-        if (CheckInput())
+        if (CheckStateChangeInput())
         {
             return;
         }
 
-        _context.Movement.Move(_context.Input.MoveDir);
+        _context.Movement.Move(_context.Input.MoveDir, true);
         _context.Movement.FaceTo(_context.Input.FaceDir);
         _context.Animation.UpdateSpeed(_context.Input.MoveDir.magnitude);
     }
 
-    bool CheckInput()
+    bool CheckStateChangeInput()
     {
         if (_context.Input.AttackPressed)
         {

@@ -3,17 +3,42 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] CharacterController _controller;
-    public Vector3 DesiredVelocity;
-    public Vector3 FacingDir = Vector3.forward;
-    public float MoveSpeed = 6f;
+    [SerializeField] float _moveSpeed = 6f;
+    [SerializeField] float _rotationSpeed = 15f;
+    Vector2 _facingDir =  Vector3.forward;
+    Camera _mainCamera;
+    public Vector3 FacingDir { get => _facingDir; }
 
-    public void Move(Vector3 movement)
+    void Awake()
     {
-        _controller.Move(movement * Time.deltaTime);
+        _mainCamera = Camera.main;
     }
 
-    public void FaceTo(Vector3 direction)
+    public void Move(Vector3 movement, bool applyPlayerSpeed)
+    {
+        if (applyPlayerSpeed)
+        {
+            _controller.Move(movement * _moveSpeed * Time.deltaTime);             
+        }
+        else
+        {
+            _controller.Move(movement * Time.deltaTime); 
+        }
+    }
+
+    public void FaceTo(Vector3 direction, bool usingMousePosition)
     {
         
+    }
+
+    public void RotateTowardsDirection(Vector3 direction)
+    {
+        if (direction == Vector3.zero)
+        {
+            return;
+        }
+
+        Quaternion targetRotation = Quaternion.LookRotation(direction, Vector3.up);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
     }
 }

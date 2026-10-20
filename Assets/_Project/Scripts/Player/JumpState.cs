@@ -3,9 +3,10 @@ using UnityEngine;
 public class JumpState : IState
 {
     readonly Player _context;
-    float Duration = 0.25f;
-    float Speed = 14f;
-    float t; Vector3 dir;
+    float _duration = 0.25f;
+    float _speed = 14f;
+    float _timer;
+    Vector3 _direction;
 
     public JumpState(Player context)
     {
@@ -14,16 +15,20 @@ public class JumpState : IState
 
     public void Enter()
     {
-        t = 0f;
-        dir = _context.Input.MoveDir.sqrMagnitude > 0.01f ? _context.Input.MoveDir.normalized : _context.FacingDir;
-        _context.Animator.SetTrigger("Jump");
+        _timer = 0f;
+        _direction = _context.Input.FaceDir.sqrMagnitude > 0.01f ? _context.Input.MoveDir.normalized : _context.Movement.FacingDir;
+        _context.Animation.StartJump();
     }
 
     public void Tick(float dt)
     {
-        t += dt;
-        _context.DesiredVelocity = dir * Speed;
-        if (t >= Duration) _context.Body.Change(_context.States.Locomotion);
+        _timer += dt;
+        _context.Movement.Move(_direction * _speed, false);
+
+        if (_timer >= _duration)
+        {
+            _context.FSM.Change(_context.States.Locomotion);
+        }
     }
 
     public void Exit() { }

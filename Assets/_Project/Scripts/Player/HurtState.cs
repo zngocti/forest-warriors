@@ -3,17 +3,26 @@ using UnityEngine;
 public class HurtState : IState
 {
     readonly Player _context;
-    float t;
+
     public HurtState(Player context)
     {
         _context = context;
     }
 
-    public void Enter() { t = 0.35f; c.Animator.SetTrigger("Hurt"); }
+    public void Enter()
+    { 
+        _context.Animation.StartHurt();
+    }
+
     public void Tick(float dt)
     {
-        t -= dt;
-        if (t <= 0f) c.Body.Change(c.States.Locomotion);
+        float normalizedTime;
+
+        if (_context.Animation.GetNormalizedTime(PlayerAnimation.StateHurt, out normalizedTime) && normalizedTime >= 1.0f)
+        {
+            _context.FSM.Change(_context.States.ActionIdle);
+        }
     }
+    
     public void Exit() { }
 }
