@@ -1,27 +1,14 @@
 using UnityEngine;
 
-public class DeadState : State<Player>
+public class DeadState : IState
 {
-    public DeadState(Player p) : base(p) { }
-
-    float vy;
-
-    public override void Enter()
+    readonly Player _context;
+    public DeadState(Player context)
     {
-        vy = 0;
-        c.anim.SetBool("Dead", true);
+        _context = context;
     }
 
-    public override void Tick(float dt)
-    {
-        // Sin input; solo cae si murió en el aire
-        vy = c.cc.isGrounded ? -2f : vy + Physics.gravity.y * dt;
-        c.cc.Move(Vector3.up * vy * dt);
-    }
-
-    public override void Exit()
-    {
-        // Solo se ejecuta si llamas a Revive()
-        c.anim.SetBool("Dead", false);
-    }
+    public void Enter() => c.Animator.SetTrigger("Die");
+    public void Tick(float dt) { }
+    public void Exit() { }
 }

@@ -1,21 +1,30 @@
 using UnityEngine;
 
-public class JumpState : State<Player>
+public class JumpState : IState
 {
-    public JumpState(Player p) : base(p) { }
-    Vector3 dir; float t;
-    const float Duration = 0.25f, Speed = 14f;
-    //agregar altura, duracion, velocidad
-    public override void Enter()
+    readonly Player _context;
+    float Duration = 0.25f;
+    float Speed = 14f;
+    float t; Vector3 dir;
+
+    public JumpState(Player context)
     {
-        dir = c.transform.forward;       // o la dirección del input
-        t = 0;
-        c.anim.SetTrigger("Dash");
+        _context = context;
     }
-    public override void Tick(float dt)
+
+    public void Enter()
     {
-        c.cc.Move(dir * Speed * dt);
+        t = 0f;
+        dir = _context.Input.MoveDir.sqrMagnitude > 0.01f ? _context.Input.MoveDir.normalized : _context.FacingDir;
+        _context.Animator.SetTrigger("Jump");
+    }
+
+    public void Tick(float dt)
+    {
         t += dt;
-        if (t >= Duration) c.Locomotion.Change(c.grounded);
+        _context.DesiredVelocity = dir * Speed;
+        if (t >= Duration) _context.Body.Change(_context.States.Locomotion);
     }
+
+    public void Exit() { }
 }

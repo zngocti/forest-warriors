@@ -1,0 +1,52 @@
+using Mono.Cecil;
+using UnityEngine;
+
+public class ActionIdleState : IState
+{
+    readonly Player _context;
+    public ActionIdleState(Player context)
+    {
+        _context = context;
+    }
+
+    public void Enter() { }
+    public void Exit() { }
+
+    public void Tick(float dt)
+    {
+        if (CheckInput())
+        {
+            return;
+        }
+
+        _context.Movement.Move(_context.Input.MoveDir);
+        _context.Movement.FaceTo(_context.Input.FaceDir);
+        _context.Animation.UpdateSpeed(_context.Input.MoveDir.magnitude);
+    }
+
+    bool CheckInput()
+    {
+        if (_context.Input.AttackPressed)
+        {
+            _context.FSM.Change(_context.States.Attack);
+            return true;           
+        }
+        else if (_context.Input.InteractPressed && _context.InteractionTarget != null )
+        {
+            _context.FSM.Change(_context.States.Interact);
+            return true;
+        }
+        else if (_context.Input.JumpPressed && _context.CanJump)
+        {
+            _context.FSM.Change(_context.States.Jump);
+            return true;
+        }
+        else if (_context.Input.DashPressed && _context.CanDash)
+        {
+            _context.FSM.Change(_context.States.Dash);
+            return true;           
+        }
+
+        return false;
+    }
+}
