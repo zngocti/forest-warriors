@@ -10,7 +10,7 @@ public class AttackState : IState
     }
 
     public void Enter()
-    { 
+    {
         _context.Animation.StartAttack();
     }
 

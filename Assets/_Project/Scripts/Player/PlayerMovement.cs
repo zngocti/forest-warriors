@@ -5,9 +5,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] CharacterController _controller;
     [SerializeField] float _moveSpeed = 6f;
     [SerializeField] float _rotationSpeed = 15f;
-    Vector2 _facingDir =  Vector3.forward;
     Camera _mainCamera;
-    public Vector3 FacingDir { get => _facingDir; }
+    public Vector3 FacingDir { get => Vector3.forward; }
 
     void Awake()
     {
@@ -26,12 +25,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void FaceTo(Vector3 direction, bool usingMousePosition)
-    {
-        
-    }
-
-    public void RotateTowardsDirection(Vector3 direction)
+    public void FaceTo(Vector3 direction)
     {
         if (direction == Vector3.zero)
         {
@@ -39,6 +33,6 @@ public class PlayerMovement : MonoBehaviour
         }
 
         Quaternion targetRotation = Quaternion.LookRotation(direction, Vector3.up);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);        
     }
 }

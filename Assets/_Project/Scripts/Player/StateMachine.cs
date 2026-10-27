@@ -4,7 +4,7 @@ public class StateMachine
 {
     public IState Current { get; private set; }
 
-    public void Change(IState next)   // permite re-entrar (ej. Hurt recibiendo otro golpe)
+    public void Change(IState next)
     {
         Current?.Exit();
         Current = next;

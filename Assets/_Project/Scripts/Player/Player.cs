@@ -27,5 +27,12 @@ public class Player : MonoBehaviour
     void Awake()
     {
         _states = new PlayerStates(this);
+        _stateMachine = new StateMachine();
+        _stateMachine.Change(_states.ActionIdle);
+    }
+
+    void Update()
+    {
+        _stateMachine.Tick(Time.deltaTime);
     }
 }

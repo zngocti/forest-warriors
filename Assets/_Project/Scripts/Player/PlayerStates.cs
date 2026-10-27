@@ -1,6 +1,5 @@
 public sealed class PlayerStates
 {
-    public LocomotionState Locomotion { get; private set; }
     public DashState Dash  { get; private set; }
     public HurtState Hurt { get; private set; }
     public DeadState Dead { get; private set; }
@@ -11,7 +10,6 @@ public sealed class PlayerStates
 
     public PlayerStates(Player context)
     {
-        Locomotion = new LocomotionState(context);
         Dash = new DashState(context);
         Hurt = new HurtState(context);
         Dead = new DeadState(context);
