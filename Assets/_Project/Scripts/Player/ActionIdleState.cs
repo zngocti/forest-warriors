@@ -19,7 +19,7 @@ public class ActionIdleState : IState
             return;
         }
 
-        _context.Movement.Move(_context.Input.MoveDir, true);
+        _context.Movement.Move(_context.Input.MoveDir, SpeedMode.Multiply, SpeedMode.Replace);
         _context.Movement.FaceTo(_context.Input.GetFaceDirRelativeTo(_context.transform.position));
         _context.Animation.UpdateSpeed(_context.Input.MoveDir.magnitude);
     }

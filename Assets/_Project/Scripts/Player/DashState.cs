@@ -23,7 +23,7 @@ public class DashState : IState
     public void Tick(float dt)
     {
         _timer += dt;
-        _context.Movement.Move(_direction * _speed, false);
+        _context.Movement.Move(_direction * _speed, SpeedMode.Ignore, SpeedMode.Add);
         _context.Movement.FaceTo(_direction);
 
         if (_timer >= _duration)
