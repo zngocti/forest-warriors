@@ -67,12 +67,15 @@ public class PlayerInput : MonoBehaviour
     public void OnMove(InputAction.CallbackContext context)
     {
         Vector2 dir = context.ReadValue<Vector2>();
+        //we use this to avoid having a faster controller when moving diagonally
+        dir = Vector2.ClampMagnitude(dir, 1.0f);
         MoveDir = new Vector3(dir.x, 0, dir.y);
     }
 
     public void OnFaceAt(InputAction.CallbackContext context)
     {
-        Vector2 dir = context.ReadValue<Vector2>();
+        Vector2 dir = context.ReadValue<Vector2>();        
+        dir.Normalize();
         FaceDir = new Vector3(dir.x, 0, dir.y);
     }
 

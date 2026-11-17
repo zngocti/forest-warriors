@@ -16,7 +16,8 @@ public class DashState : IState
     public void Enter()
     {
         _timer = 0f;
-        _direction = _context.Input.GetFaceDirRelativeTo(_context.transform.position).sqrMagnitude > 0.01f ? _context.Input.MoveDir.normalized : _context.Movement.FacingDir;
+        Vector3 movingDir = _context.Input.MoveDir.sqrMagnitude > 0.01 ? _context.Input.MoveDir.normalized : _context.Movement.FacingDir;
+        _direction = _context.Input.GetFaceDirRelativeTo(_context.transform.position).sqrMagnitude > 0.01f ? movingDir : _context.Movement.FacingDir;
         _context.Animation.StartDash();
     }
 
